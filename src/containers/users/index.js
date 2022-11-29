@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from 'axios'
-import People from './assets/People.png'
-import seta from './assets/seta.svg'
-import lixeira from './assets/Lixeira.svg'
+import People from '../../assets/People.png'
+import seta from '../../assets/seta.svg'
+import lixeira from '../../assets/Lixeira.svg'
 
 import { Container, Imagem, ContainerItens, H1, InputLabel, Input, Button, User } from "./styles"
 //JSX
@@ -14,18 +14,26 @@ function App() {
 
   async function addNewUser() {
 
-    const data = await axios.post()
-
-    // setUsers
-    //   ([...users,
-    //   {
-    //     id: Math.random(),
-    //     name: inputName.current.value,
-    //     age: inputAge.current.value
-    //   }])
+    const { data: newUser } = await axios.post("http://localhost:3001/users", {
+      name: inputName.current.value,
+      age: inputAge.current.value
+    })
+    setUsers
+      ([...users, newUser])
   }
 
-  function deleteUser(userId) {
+  useEffect(() => {
+    async function fetchUsers() {
+      const { data: newUsers } = await axios.get("http://localhost:3001/users");
+      setUsers(newUsers)
+    }
+    fetchUsers()
+  }, [])
+
+
+
+  async function deleteUser(userId) {
+    await axios.delete(`http://localhost:3001/users/${userId}`)
     const newUsers = users.filter((user) => user.id !== userId)
     setUsers(newUsers)
   }
