@@ -1,13 +1,25 @@
 import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom"
 import axios from 'axios'
 import People from '../../assets/People.png'
 import seta from '../../assets/seta.svg'
 
-import { Container, Imagem, ContainerItens, H1, InputLabel, Input, Button } from "./styles"
-//JSX
+import H1  from '../../Components/Title'
+import ContainerItens  from '../../Components/ContainerIntens'
+import Button  from '../../Components/Button'
+
+
+
+import {
+  Container,
+  Imagem,
+  InputLabel,
+  Input,
+} from "./styles"
+
 function App() {
-  // const users = [];
   const [users, setUsers] = useState([])
+  const history = useHistory()
   const inputName = useRef()
   const inputAge = useRef()
 
@@ -19,6 +31,8 @@ function App() {
     })
     setUsers
       ([...users, newUser])
+
+    history.push('/usuarios')
   }
 
   return (
@@ -37,9 +51,11 @@ function App() {
         <Input ref={inputAge} placeholder="Idade"></Input>
 
         <Button onClick={addNewUser}>
-          Cadastrar <img alt="seta" src={seta} /></Button>
+          Cadastrar <img alt="seta" src={seta} />
+        </Button>
 
       </ContainerItens>
+
     </Container>
   )
 }
